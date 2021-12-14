@@ -1,49 +1,39 @@
-class Dog {
-    private _name;
+class Animal{
+    private _animalName;
+    private _animalSound;
 
-    set name(value) {
-        this._name = value;
+    constructor(name: string, sound: string){
+        this._animalName = name;
+        this._animalSound = sound;
     }
 
     get name() {
-        return this._name;
+        return this._animalName;
     }
 
     get type() {
-        return 'dog';
+        return this._animalName;
+    }
+
+    get sound(){
+        return this._animalSound;
     }
 }
 
-class Cat {
-    private _name;
-
-    set name(value) {
-        this._name = value;
-    }
-
-    get name() {
-        return this._name;
-    }
-
-    get type() {
-        return 'cat';
-    }
+class Dog extends Animal{
+    
 }
 
-class Parrot {
-    private _name;
+class Cat extends Animal{
+    
+}
 
-    set name(value) {
-        this._name = value;
-    }
+class Parrot extends Animal{
+    
+}
 
-    get name() {
-        return this._name;
-    }
+class Camel extends Animal{
 
-    get type() {
-        return 'parrot';
-    }
 }
 
 class Zoo {
@@ -56,25 +46,13 @@ class Zoo {
     get animals(): Array<Object> {
         return this._animals;
     }
-
-    public makeSound(animal: object) : string {
-        switch(animal.type) {
-            case 'cat':
-                return 'Miauw';
-            case 'dog':
-                return 'Woef';
-            case 'parrot':
-                return 'I am a pirate';
-            default:
-                throw new Error('Unknown type: '+ animal.type);
-        }
-    }
 }
 let zoo = new Zoo;
-zoo.addAnimal(new Cat);
-zoo.addAnimal(new Dog);
-zoo.addAnimal(new Parrot);
+zoo.addAnimal(new Cat("Cat", "Miauw"));
+zoo.addAnimal(new Dog("Dog", "Woef"));
+zoo.addAnimal(new Parrot("Parrot", "I am a pirate"));
+zoo.addAnimal(new Camel("Camel", ""));
 
 zoo.animals.forEach((animal) => {
-    document.querySelector('#target').innerHTML += (animal.type + ": " + zoo.makeSound(animal) + "<br>");
+    document.querySelector('#target').innerHTML += (animal.type + ": " + animal.sound + "<br>");
 });

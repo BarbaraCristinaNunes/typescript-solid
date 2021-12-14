@@ -7,6 +7,15 @@ interface UserAuth {
     getFacebookLogin(token : string) : boolean;
 }
 
+interface AdminAuth{
+    checkPassword(password: string) : boolean;
+    resetPassword();
+}
+
+interface BotAuth{
+    setGoogleToken(token : string);
+    checkGoogleLogin(token : string) : boolean;
+}
 class User implements UserAuth {
     private _password : string = 'user';
     private _facebookToken : string;
@@ -41,35 +50,30 @@ class User implements UserAuth {
 }
 
 //admin cannot use google or facebook token
-class Admin implements UserAuth {
+class Admin implements AdminAuth {
     private _password : string = 'admin';
-
-    checkGoogleLogin(token: string): boolean {
-        return false;
-    }
 
     checkPassword(password: string): boolean {
         return (password === this._password);
     }
-
-    getFacebookLogin(token: string): boolean {
-        return false;
-    }
-
-    setFacebookToken() {
-        throw new Error('Function not supported for admins');
-    }
-
-    setGoogleToken() {
-        throw new Error('Function not supported for admins');
-    }
-
+    
     resetPassword() {
         this._password = prompt('What is your new password?');
     }
 }
 
-// class GoogleBot implements UserAuth {}
+class GoogleBot implements BotAuth {
+    private _googleToken : string;
+
+    checkGoogleLogin(token) {
+        // return "this will not work";
+        return (token === this._googleToken);
+    }
+
+    setGoogleToken(token : string) {
+        this._googleToken = token;
+    }
+}
 
 const passwordElement = <HTMLInputElement>document.querySelector('#password');
 const typePasswordElement = <HTMLInputElement>document.querySelector('#typePassword');
@@ -80,6 +84,7 @@ const resetPasswordElement = <HTMLAnchorElement>document.querySelector('#resetPa
 
 let guest = new User;
 let admin = new Admin;
+let bot = new GoogleBot;
 
 document.querySelector('#login-form').addEventListener('submit', (event) => {
     event.preventDefault();
